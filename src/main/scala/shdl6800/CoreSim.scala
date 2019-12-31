@@ -49,30 +49,35 @@ object CoreSim {
         }
       }
 
-      val mem = Map(0xFFFE -> 0x12, // Reset vector high
-                    0xFFFF -> 0x34, // Reset vector low
-                    0x1234 -> 0x7E, // JMP ext
-                    0x1235 -> 0xA0, // Address high
-                    0x1236 -> 0x10, // Address low
-                    0xA010 -> 0x20, // BRA
-                    0xA011 -> 0x01, // rel = 1
-                    0xA012 -> 0x01, // NOP
-                    0xA013 -> 0x0A, // Clear overflow flag
-                    0xA014 -> 0x29, // BVS
-                    0xA015 -> 0x10, // rel = 16
-                    0xA016 -> 0x28, // BVC
-                    0xA017 -> 0x01, // rel = 1
-                    0xA018 -> 0x01, // NOP
-                    0xA019 -> 0x7E, // JMP ext
-                    0xA01A -> 0x12, // Address high
-                    0xA01B -> 0x34) // Address low
+//      val mem = Map(0xFFFE -> 0x12, // Reset vector high
+//                    0xFFFF -> 0x34, // Reset vector low
+//                    0x1234 -> 0x7E, // JMP ext
+//                    0x1235 -> 0xA0, // Address high
+//                    0x1236 -> 0x10, // Address low
+//                    0xA010 -> 0x20, // BRA
+//                    0xA011 -> 0x01, // rel = 1
+//                    0xA012 -> 0x01, // NOP
+//                    0xA013 -> 0x0A, // Clear overflow flag
+//                    0xA014 -> 0x29, // BVS
+//                    0xA015 -> 0x10, // rel = 16
+//                    0xA016 -> 0x28, // BVC
+//                    0xA017 -> 0x01, // rel = 1
+//                    0xA018 -> 0x01, // NOP
+//                    0xA019 -> 0x7E, // JMP ext
+//                    0xA01A -> 0x12, // Address high
+//                    0xA01B -> 0x34) // Address low
+
+      val mem = Map(
+        0xFFFE -> 0x00,
+        0xFFFF -> 0x00,
+        0x0000 -> 0x08)
 
       for(i <- 0 to 30) {
         dut.clockDomain.waitFallingEdge()
         if(mem.contains(dut.io.Addr.toInt)) {
           dut.io.Din #= mem(dut.io.Addr.toInt)
         } else {
-          dut.io.Din #= 0xFF
+          dut.io.Din #= 0x08 //0xFF
         }
       }
     }
